@@ -23,7 +23,7 @@ RUN apt-get update && \
 
 RUN useradd -m -U -s /bin/bash stanza
 
-RUN mkdir -p /opt/stanza mkdir -p /project && \
+RUN mkdir -p /opt/stanza /project && \
     chown stanza:stanza /opt/stanza /project
 
 WORKDIR /opt/stanza
