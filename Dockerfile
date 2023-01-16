@@ -1,4 +1,4 @@
-FROM ubuntu as build
+FROM alpine as build
 
 # First create a build image and copy the zip file
 #  over. We then unpack that zip file so that we
@@ -7,21 +7,21 @@ FROM ubuntu as build
 USER root
 ARG lbstanza=lstanza_0_17_53.zip
 COPY $lbstanza /opt/
-RUN apt update && apt install -y unzip && mkdir -p /opt/temp && \
+
+# @TODO - run bootstrap build here.
+
+RUN mkdir -p /opt/temp && \
     unzip /opt/$lbstanza -d /opt/temp
 
 # This is the output docker image
-FROM ubuntu
+FROM alpine
 
-ARG pkgs="build-essential"
+ARG pkgs="build-base"
 
 USER root
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends $pkgs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --update-cache $pkgs && rm -rf /var/cache/apk/*
 
-RUN useradd -m -U -s /bin/bash stanza
+RUN adduser -D -h /home/stanza -s /bin/ash stanza
 
 RUN mkdir -p /opt/stanza /project && \
     chown stanza:stanza /opt/stanza /project
@@ -30,7 +30,9 @@ WORKDIR /opt/stanza
 COPY --chown=stanza:stanza --from=build /opt/temp/ .
 ENV PATH=${PATH}:/opt/stanza
 USER stanza
-RUN /opt/stanza/stanza install -platform linux
+# NOTE: This fails because the deployed stanza is not
+#   setup to run on musl in alpine.
+#RUN /opt/stanza/stanza install -platform linux
 
 WORKDIR /project
 ENTRYPOINT ["/opt/stanza/stanza"]
