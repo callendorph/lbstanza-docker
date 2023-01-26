@@ -12,7 +12,8 @@ RUN apt update && apt install -y unzip && mkdir -p /opt/temp && \
 
 # This is the output docker image
 FROM ubuntu
-
+LABEL org.opencontainers.image.source=https://github.com/callendorph/lbstanza-docker
+LABEL org.opencontainers.image.description="lbstanza development container - see http://lbstanza.org"
 ARG pkgs="build-essential"
 
 USER root
