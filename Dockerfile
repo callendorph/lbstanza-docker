@@ -24,6 +24,10 @@ RUN apt-get update && \
 
 RUN useradd -m -U -s /bin/bash stanza
 
+# The `/project` directory is the working directory
+#  for the user of this container. The idea is that
+#  the project code gets mounted as a volume to this
+#  directory.
 RUN mkdir -p /opt/stanza /project && \
     chown stanza:stanza /opt/stanza /project
 
