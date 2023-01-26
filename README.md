@@ -1,14 +1,17 @@
 # Executable Docker Image for lbstanza
 
-This project contains a Dockerfile for creating an
+This project contains a Dockerfile for creating a
 stanza executable image. The idea is that this image
 is used to run unit tests in github actions or other
 CI implementations.
 
+See https://github.com/StanzaOrg/lbstanza for more information
+about `stanza`
+
 ## Example:
 
 ```
-$> docker run -it --rm -v ./myproject:/project stanza:latest build
+$> docker run -it --rm -v ./myproject:/project lbstanza:latest build
 ```
 
 This will run `stanza build` on the project defined in `myproject`.
@@ -18,7 +21,7 @@ exactly. You are better off using either a script or a Makefile
 to run the build and the tests simultaneously:
 
 ```
-$> docker run -it --rm -v ./myproject:/project --entrypoint /usr/bin/make stanza:latest tests
+$> docker run -it --rm -v ./myproject:/project --entrypoint /usr/bin/make lbstanza:latest tests
 stanza build
 stanza build unit-tests
 ./unit-tests
@@ -27,14 +30,14 @@ stanza build unit-tests
 ...
 ```
 
-If you are building a C wrapper around an existing library. You may need additional dependencies. If so - you are best off creating a new Dockerfile that uses this image as the base.
+If you are building a C wrapper around an existing library. You may need additional dependencies. If so, you are best off creating a new Dockerfile that uses this image as the base.
 
 ## Repl
 
 You can run the repl and test things.
 
 ```
-$> docker run -it --rm stanza:latest repl
+$> docker run -it --rm lbstanza:latest repl
 stanza>
 ```
 
@@ -46,8 +49,8 @@ stanza>
 ## Build
 
 ```
-$> docker build -t stanza:0.17.52 --build-arg lbstanza=lstanza_0_17_52.zip .
-$> docker tag stanza:0.17.52 stanza:latest
+$> docker build -t lbstanza:0.17.52 --build-arg lbstanza=lstanza_0_17_52.zip .
+$> docker tag lbstanza:0.17.52 lbstanza:latest
 ```
 
 This should create an image with the stanza compiler installed and accessible on the path.
